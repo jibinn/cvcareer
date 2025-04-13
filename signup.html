@@ -4,15 +4,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join StudentCareerBoost</title>
+    <title>Professional Job Application Form</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Animate.css -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <!-- SweetAlert2 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+    
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
-        }
-
         :root {
             --primary-color: #2563eb;
             --secondary-color: #1e40af;
@@ -20,267 +22,451 @@
             --light-color: #f8fafc;
             --dark-color: #1e293b;
         }
-
+        
         body {
-            line-height: 1.6;
-            color: var(--dark-color);
-            background: var(--light-color);
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4e8f0 100%);
+            min-height: 100vh;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
-
-        .container {
-            width: 90%;
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 40px 20px;
-        }
-
-        .btn {
-            display: inline-block;
-            background: var(--primary-color);
-            color: white;
-            padding: 12px 24px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            font-weight: bold;
-            transition: background 0.3s;
-            font-size: 16px;
-            width: 100%;
-        }
-
-        .btn:hover {
-            background: var(--secondary-color);
-        }
-
-        .btn:disabled {
-            background: #ccc;
-            cursor: not-allowed;
-        }
-
+        
         .form-container {
-            background: white;
+            max-width: 600px;
+            margin: auto;
+            margin-top: 50px;
             padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            background-color: #fff;
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
         }
-
-        h1 {
+        
+        .form-container:hover {
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.12);
+            transform: translateY(-5px);
+        }
+        
+        .form-header {
             text-align: center;
             margin-bottom: 30px;
-            color: var(--primary-color);
+            position: relative;
         }
-
-        .form-group {
-            margin-bottom: 20px;
+        
+        .form-header h4 {
+            font-weight: 700;
+            color: var(--dark-color);
+            position: relative;
+            display: inline-block;
         }
-
-        .form-group label {
-            display: block;
-            margin-bottom: 8px;
+        
+        .form-header h4::after {
+            content: '';
+            position: absolute;
+            width: 50px;
+            height: 3px;
+            background: var(--primary-color);
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 3px;
+        }
+        
+        .form-control {
+            padding: 12px 15px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 0.25rem rgba(37, 99, 235, 0.15);
+        }
+        
+        .form-label {
             font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 8px;
         }
-
-        .form-group input,
-        .form-group select,
-        .form-group textarea {
-            width: 100%;
+        
+        .btn-primary {
+            background-color: var(--primary-color);
+            border: none;
             padding: 12px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            font-size: 16px;
+            font-weight: 600;
+            border-radius: 8px;
+            transition: all 0.3s ease;
         }
-
-        .plan-display {
-            background: #f0f7ff;
-            padding: 15px;
-            border-radius: 5px;
+        
+        .btn-primary:hover {
+            background-color: var(--secondary-color);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(37, 99, 235, 0.3);
+        }
+        
+        .form-check-input:checked {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+        
+        .file-upload-wrapper {
+            position: relative;
             margin-bottom: 20px;
+        }
+        
+        .file-upload-label {
+            display: block;
+            padding: 12px;
+            border: 2px dashed #e2e8f0;
+            border-radius: 8px;
             text-align: center;
-            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
         }
-
-        .optional {
-            color: #666;
-            font-size: 0.9em;
+        
+        .file-upload-label:hover {
+            border-color: var(--primary-color);
+            background-color: rgba(37, 99, 235, 0.05);
         }
-
-        .file-hint {
-            font-size: 0.8em;
-            color: #666;
-            margin-top: 5px;
+        
+        .file-upload-icon {
+            font-size: 24px;
+            color: var(--primary-color);
+            margin-bottom: 10px;
         }
-
-        input[type="file"] {
-            padding: 8px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            width: 100%;
-            background: white;
+        
+        .file-name {
+            display: block;
+            margin-top: 8px;
+            font-size: 14px;
+            color: var(--dark-color);
         }
-
-        .error-message {
-            color: red;
+        
+        .progress {
+            height: 8px;
             margin-top: 10px;
-            text-align: center;
+            border-radius: 4px;
+            display: none;
+        }
+        
+        .progress-bar {
+            background-color: var(--primary-color);
+            transition: width 0.6s ease;
+        }
+        
+        .social-icon {
+            color: var(--primary-color);
+            margin-right: 5px;
+        }
+        
+        /* Animations */
+        .animate-form {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeInUp 0.8s forwards;
+        }
+        
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .delay-1 {
+            animation-delay: 0.2s;
+        }
+        
+        .delay-2 {
+            animation-delay: 0.4s;
+        }
+        
+        .delay-3 {
+            animation-delay: 0.6s;
         }
     </style>
 </head>
 
-<body>
+<body class="bg-light d-flex align-items-center">
     <div class="container">
-        <div class="form-container">
-            <h1>Join StudentCareerBoost</h1>
-
-            <div class="plan-display" id="selectedPlan">
-                <!-- Plan will be displayed here by JavaScript -->
+        <div class="form-container animate__animated animate__fadeInUp">
+            <div class="form-header">
+                <h4 class="animate__animated animate__fadeIn">Job Application Form</h4>
+                <p class="text-muted animate__animated animate__fadeIn delay-1">Join our team of talented professionals</p>
             </div>
-
-            <form id="signupForm">
-                <input type="hidden" id="planInput" name="plan">
-
-                <div class="form-group">
-                    <label for="name">Full Name*</label>
-                    <input type="text" id="name" name="name" required>
+            
+            <form id="submit-to-google-sheet">
+                <div class="form-group mb-4 animate-form delay-1">
+                    <label for="name" class="form-label">Full Name</label>
+                    <input class="form-control" type="text" name="name" id="name" placeholder="Your full name" required />
                 </div>
-
-                <div class="form-group">
-                    <label for="email">Email Address*</label>
-                    <input type="email" id="email" name="email" required>
+                
+                <div class="form-group mb-4 animate-form delay-1">
+                    <label for="email" class="form-label">Email Address</label>
+                    <input class="form-control" type="email" name="email" id="email" placeholder="your.email@example.com" required />
                 </div>
-
-                <div class="form-group">
-                    <label for="phone">Phone Number*</label>
-                    <input type="tel" id="phone" name="phone" required>
+                
+                <div class="form-group mb-4 animate-form delay-2">
+                    <label for="contact_number" class="form-label">Contact Number</label>
+                    <input class="form-control" type="tel" name="contact_number" id="contact_number" placeholder="+91 9876543210" required />
                 </div>
-
-                <div class="form-group">
-                    <label for="linkedin">LinkedIn Profile <span class="optional">(optional)</span></label>
-                    <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/yourprofile">
+                <div class="form-group mb-4 animate-form delay-2">
+                    <label for="plan" class="form-label">Select Plan</label>
+                    <select class="form-select" name="plan" id="plan" required>
+                        <option value="" disabled selected>Choose your plan</option>
+                        <option value="2000">Basic Plan (₹2000)</option>
+                        <option value="5000">Premium Plan (₹5000)</option>
+                    </select>
                 </div>
-
-                <div class="form-group">
-                    <label for="github">GitHub Profile <span class="optional">(optional)</span></label>
-                    <input type="url" id="github" name="github" placeholder="https://github.com/yourusername">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group mb-4 animate-form delay-2">
+                            <label for="github" class="form-label">
+                                <i class="fab fa-github social-icon"></i>GitHub Profile
+                            </label>
+                            <input class="form-control" type="url" name="github" id="github" placeholder="https://github.com/username" />
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group mb-4 animate-form delay-2">
+                            <label for="linkedin" class="form-label">
+                                <i class="fab fa-linkedin social-icon"></i>LinkedIn Profile
+                            </label>
+                            <input class="form-control" type="url" name="linkedin" id="linkedin" placeholder="https://linkedin.com/in/username" />
+                        </div>
+                    </div>
                 </div>
-
-                <div class="form-group">
-                    <label for="cv">Upload Your CV (PDF/DOC/DOCX)*</label>
-                    <input type="file" id="cv" name="cv" accept=".pdf,.doc,.docx" required>
-                    <p class="file-hint">Max file size: 2MB</p>
+                
+                <div class="form-group mb-4 animate-form delay-3">
+                    <label class="form-label">Upload Your CV</label>
+                    <div class="file-upload-wrapper">
+                        <label for="cv" class="file-upload-label">
+                            <div class="file-upload-icon">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                            </div>
+                            <span>Drag & drop your CV here or click to browse</span>
+                            <small class="text-muted d-block">(PDF or DOCX, max 2MB)</small>
+                            <span id="file-name" class="file-name"></span>
+                        </label>
+                        <input type="file" name="cv" id="cv" class="d-none" accept=".pdf,.doc,.docx" required />
+                        <div class="progress">
+                            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        </div>
+                    </div>
                 </div>
-
-                <button type="submit" class="btn" id="submitBtn">Submit Application</button>
-                <div class="error-message" id="errorMessage"></div>
+                
+                <div class="form-group form-check mb-4 animate-form delay-3">
+                    <input class="form-check-input" type="checkbox" id="consent" required />
+                    <label class="form-check-label" for="consent">
+                        I consent to the processing of my personal data for recruitment purposes in accordance with the <a href="#" data-bs-toggle="modal" data-bs-target="#privacyModal">Privacy Policy</a>.
+                    </label>
+                </div>
+                
+                <div class="d-grid animate-form delay-3">
+                    <button type="submit" class="btn btn-primary btn-lg">
+                        <span id="submit-text">Submit Application</span>
+                        <span id="submit-spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
+                    </button>
+                </div>
             </form>
         </div>
     </div>
 
+    <!-- Privacy Policy Modal -->
+    <div class="modal fade" id="privacyModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Privacy Policy</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <p>We collect and process your personal data solely for recruitment purposes. Your information will be kept confidential and will not be shared with third parties without your explicit consent.</p>
+                    <p>By submitting this application, you agree to our data processing practices as described in our full Privacy Policy.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS Bundle with Popper -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
     <script>
-        // Get the plan from URL parameter
-        const urlParams = new URLSearchParams(window.location.search);
-        const plan = urlParams.get('plan');
+        const scriptURL = "https://script.google.com/macros/s/AKfycbwgavixZJLbnYHO79KRyn_kJtRDJXuJA1CIPblPpVMXJGF4nL3mRWKHlWC1hf6e56m_/exec";
+        const form = document.getElementById("submit-to-google-sheet");
+        const cvInput = document.getElementById("cv");
+        const fileName = document.getElementById("file-name");
+        const progressBar = document.querySelector(".progress");
+        const progress = document.querySelector(".progress-bar");
+        const submitText = document.getElementById("submit-text");
+        const submitSpinner = document.getElementById("submit-spinner");
 
-        // Set the plan in the form and display
-        if (plan) {
-            const planInput = document.getElementById('planInput');
-            const planDisplay = document.getElementById('selectedPlan');
-
-            if (plan === 'basic') {
-                planInput.value = 'basic';
-                planDisplay.textContent = 'You are signing up for: Basic CV Package (₹2000)';
-            } else if (plan === 'premium') {
-                planInput.value = 'premium';
-                planDisplay.textContent = 'You are signing up for: Premium Job Landing Package (₹5000)';
-            }
-        }
-
-        // Add file size validation
-        document.getElementById('cv').addEventListener('change', function (e) {
-            const file = e.target.files[0];
-            const maxSize = 2 * 1024 * 1024; // 2MB
-            const errorElement = document.getElementById('errorMessage');
-
-            if (file && file.size > maxSize) {
-                errorElement.textContent = 'File size exceeds 2MB limit. Please choose a smaller file.';
-                e.target.value = ''; // Clear the file input
+        // File upload display
+        cvInput.addEventListener("change", function() {
+            if (this.files.length > 0) {
+                fileName.textContent = this.files[0].name;
+                
+                // Check file size
+                if (this.files[0].size > 2 * 1024 * 1024) {
+                    fileName.innerHTML += ' <span class="text-danger">(File too large!)</span>';
+                    this.value = "";
+                }
             } else {
-                errorElement.textContent = '';
+                fileName.textContent = "";
             }
         });
 
-        // Form submission handling
-        document.getElementById('signupForm').addEventListener('submit', async function (e) {
+        // Drag and drop functionality
+        const fileUploadLabel = document.querySelector(".file-upload-label");
+        
+        fileUploadLabel.addEventListener("dragover", (e) => {
             e.preventDefault();
+            fileUploadLabel.style.borderColor = "var(--primary-color)";
+            fileUploadLabel.style.backgroundColor = "rgba(37, 99, 235, 0.1)";
+        });
+        
+        fileUploadLabel.addEventListener("dragleave", () => {
+            fileUploadLabel.style.borderColor = "#e2e8f0";
+            fileUploadLabel.style.backgroundColor = "transparent";
+        });
+        
+        fileUploadLabel.addEventListener("drop", (e) => {
+            e.preventDefault();
+            fileUploadLabel.style.borderColor = "#e2e8f0";
+            fileUploadLabel.style.backgroundColor = "transparent";
+            
+            if (e.dataTransfer.files.length) {
+                cvInput.files = e.dataTransfer.files;
+                const event = new Event("change");
+                cvInput.dispatchEvent(event);
+            }
+        });
 
-            const submitBtn = document.getElementById('submitBtn');
-            const errorElement = document.getElementById('errorMessage');
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Submitting...';
-            errorElement.textContent = '';
+        // Form submission
+        form.addEventListener("submit", async function(e) {
+            e.preventDefault();
+            
+            // Validate consent
+            if (!document.getElementById("consent").checked) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Consent Required',
+                    text: 'Please agree to our privacy policy before submitting',
+                });
+                return;
+            }
+            
+            // Validate CV
+            if (cvInput.files.length === 0) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'CV Required',
+                    text: 'Please upload your CV before submitting',
+                });
+                return;
+            }
+            
+            const file = cvInput.files[0];
+            if (file.size > 2 * 1024 * 1024) {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'File Too Large',
+                    text: 'Please upload a file smaller than 2MB',
+                });
+                return;
+            }
+
+            // Show loading state
+            submitText.textContent = "Uploading...";
+            submitSpinner.classList.remove("d-none");
+            progressBar.style.display = "block";
+
+            const formData = new FormData(form);
+            formData.append("consent", document.getElementById("consent").checked ? "Yes" : "No");
+
+            // Simulate progress (remove in production)
+            let progressValue = 0;
+            const progressInterval = setInterval(() => {
+                progressValue += Math.random() * 10;
+                if (progressValue >= 90) clearInterval(progressInterval);
+                progress.style.width = `${progressValue}%`;
+                progress.setAttribute("aria-valuenow", progressValue);
+            }, 200);
 
             try {
-                // Get form data
-                const formData = {
-                    plan: document.getElementById('planInput').value,
-                    name: document.getElementById('name').value,
-                    email: document.getElementById('email').value,
-                    phone: document.getElementById('phone').value,
-                    linkedin: document.getElementById('linkedin').value || null,
-                    github: document.getElementById('github').value || null
-                };
-
-                // Handle file upload
-                const cvInput = document.getElementById('cv');
-                if (cvInput.files.length > 0) {
-                    const file = cvInput.files[0];
-
-                    // Read file as base64
-                    const fileContent = await new Promise((resolve, reject) => {
-                        const reader = new FileReader();
-                        reader.onload = () => resolve(reader.result.split(',')[1]);
-                        reader.onerror = reject;
-                        reader.readAsDataURL(file);
+                const reader = new FileReader();
+                reader.onload = async function() {
+                    formData.append("cv", reader.result); // Full data URI
+                    
+                    const response = await fetch(scriptURL, {
+                        method: "POST",
+                        body: formData
                     });
-
-                    // Now package it into a nested object (so the backend can read it)
-                    formData.cvFile = {
-                        name: file.name,
-                        mimeType: file.type,
-                        data: fileContent
-                    };
-                }
-
-
-                // Submit to Google Apps Script
-                const scriptUrl = 'https://script.google.com/macros/s/AKfycbwvQ9lZtvS4LFNDwfJVkdQ5G68gq2XGfmzAUEZIceM2FsDxxIIJn9dKrCDlaBhxKsZSYA/exec';
-
-                const response = await fetch(scriptUrl, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify(formData)
-                });
-
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-
-                const result = await response.json();
-                if (result.result === 'success') {
-                    window.location.href = "success.html?plan=" + encodeURIComponent(formData.plan);
-                } else {
-                    throw new Error(result.error || 'Unknown error occurred');
-                }
+                    
+                    clearInterval(progressInterval);
+                    progress.style.width = "100%";
+                    progress.setAttribute("aria-valuenow", 100);
+                    
+                    const result = await response.json();
+                    
+                    if (result.result === "success") {
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Application Submitted!',
+                            text: 'Thank you for your application. We will review it and get back to you soon.',
+                            showConfirmButton: false,
+                            timer: 2000
+                        });
+                        
+                        // Reset form
+                        form.reset();
+                        fileName.textContent = "";
+                        progressBar.style.display = "none";
+                    } else {
+                        throw new Error(result.error || "Submission failed");
+                    }
+                };
+                
+                reader.readAsDataURL(file);
             } catch (error) {
-                console.error('Error:', error);
-                errorElement.textContent = 'There was an error submitting your form. Please try again.';
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Submit Application';
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Submission Error',
+                    text: error.message || 'Something went wrong. Please try again!',
+                });
+            } finally {
+                submitText.textContent = "Submit Application";
+                submitSpinner.classList.add("d-none");
+                progressBar.style.display = "none";
+                progress.style.width = "0%";
+                progress.setAttribute("aria-valuenow", 0);
             }
         });
+
+        // Animate form elements on scroll
+        const animateOnScroll = function() {
+            const elements = document.querySelectorAll('.animate-form');
+            
+            elements.forEach((element, index) => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (elementPosition < windowHeight - 100) {
+                    element.style.animationDelay = `${index * 0.1}s`;
+                    element.classList.add('animate__animated', 'animate__fadeInUp');
+                    element.style.opacity = '1';
+                }
+            });
+        };
+
+        // Initialize animations
+        window.addEventListener('load', animateOnScroll);
+        window.addEventListener('scroll', animateOnScroll);
     </script>
 </body>
-
 </html>

@@ -4,306 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Student Career Boost - Get Job Ready</title>
-    <style>
-        /* Basic Reset */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Arial', sans-serif;
-        }
-        
-        /* Variables */
-        :root {
-            --primary-color: #2563eb;
-            --secondary-color: #1e40af;
-            --accent-color: #f59e0b;
-            --light-color: #f8fafc;
-            --dark-color: #1e293b;
-        }
-        
-        /* Global Styles */
-        body {
-            line-height: 1.6;
-            color: var(--dark-color);
-        }
-        
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
-        
-        .btn {
-            display: inline-block;
-            background: var(--primary-color);
-            color: white;
-            padding: 10px 20px;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            text-decoration: none;
-            font-weight: bold;
-            transition: background 0.3s;
-        }
-        
-        .btn:hover {
-            background: var(--secondary-color);
-        }
-        
-        .btn-accent {
-            background: var(--accent-color);
-        }
-        
-        .btn-accent:hover {
-            opacity: 0.9;
-        }
-        
-        section {
-            padding: 60px 0;
-        }
-        
-        /* Header */
-        header {
-            background: var(--light-color);
-            padding: 20px 0;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-        
-        nav {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: var(--primary-color);
-        }
-        
-        .nav-links {
-            display: flex;
-            list-style: none;
-        }
-        
-        .nav-links li {
-            margin-left: 30px;
-        }
-        
-        .nav-links a {
-            text-decoration: none;
-            color: var(--dark-color);
-            font-weight: 500;
-        }
-        
-        /* Hero Section */
-        .hero {
-            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
-            color: white;
-            text-align: center;
-            padding: 100px 0;
-        }
-        
-        .hero h1 {
-            font-size: 2.5rem;
-            margin-bottom: 20px;
-        }
-        
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 700px;
-            margin: 0 auto 30px;
-        }
-        
-        /* Services Section */
-        .services {
-            text-align: center;
-        }
-        
-        .section-title {
-            margin-bottom: 50px;
-            font-size: 2rem;
-            position: relative;
-            display: inline-block;
-        }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            width: 50%;
-            height: 3px;
-            background: var(--accent-color);
-            bottom: -10px;
-            left: 25%;
-        }
-        
-        .plans {
-            display: flex;
-            justify-content: center;
-            flex-wrap: wrap;
-            gap: 30px;
-        }
-        
-        .plan {
-            background: var(--light-color);
-            border-radius: 10px;
-            padding: 30px;
-            width: 100%;
-            max-width: 350px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-            transition: transform 0.3s;
-        }
-        
-        .plan:hover {
-            transform: translateY(-10px);
-        }
-        
-        .plan h3 {
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            color: var(--primary-color);
-        }
-        
-        .plan .price {
-            font-size: 2rem;
-            font-weight: bold;
-            margin: 20px 0;
-            color: var(--dark-color);
-        }
-        
-        .plan ul {
-            list-style: none;
-            text-align: left;
-            margin-bottom: 30px;
-        }
-        
-        .plan ul li {
-            margin-bottom: 10px;
-            position: relative;
-            padding-left: 25px;
-        }
-        
-        .plan ul li::before {
-            content: '✓';
-            color: var(--accent-color);
-            position: absolute;
-            left: 0;
-            font-weight: bold;
-        }
-        
-        /* Testimonials */
-        .testimonials {
-            background: var(--light-color);
-        }
-        
-        .testimonial-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 30px;
-        }
-        
-        .testimonial {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-        }
-        
-        .testimonial .quote {
-            font-style: italic;
-            margin-bottom: 20px;
-        }
-        
-        .testimonial .author {
-            font-weight: bold;
-        }
-        
-        /* Contact */
-        .contact-form {
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
-        .form-group {
-            margin-bottom: 20px;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 500;
-        }
-        
-        .form-group input,
-        .form-group textarea,
-        .form-group select {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-        }
-        
-        .form-group textarea {
-            height: 150px;
-        }
-        
-        /* Footer */
-        footer {
-            background: var(--dark-color);
-            color: white;
-            padding: 40px 0;
-            text-align: center;
-        }
-        
-        .footer-links {
-            display: flex;
-            justify-content: center;
-            list-style: none;
-            margin: 20px 0;
-        }
-        
-        .footer-links li {
-            margin: 0 15px;
-        }
-        
-        .footer-links a {
-            color: white;
-            text-decoration: none;
-        }
-        
-        /* Responsive */
-        @media (max-width: 768px) {
-            .nav-links {
-                display: none;
-            }
-            
-            .hero h1 {
-                font-size: 2rem;
-            }
-            
-            .plans {
-                flex-direction: column;
-                align-items: center;
-            }
-        }
-    </style>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
     <!-- Header -->
-    <header>
+    <header class="header">
         <div class="container">
-            <nav>
-                <div class="logo">StudentCareerBoost</div>
+            <nav class="navbar">
+                <div class="logo animate__animated animate__fadeInLeft">StudentCareerBoost</div>
                 <ul class="nav-links">
-                    <li><a href="#services">Services</a></li>
-                    <li><a href="#testimonials">Success Stories</a></li>
-                    <li><a href="#contact">Contact</a></li>
+                    <li><a href="#services" class="nav-link">Services</a></li>
+                    <li><a href="#testimonials" class="nav-link">Success Stories</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                    <li><a href="#" class="btn btn-outline">Login</a></li>
                 </ul>
+                <div class="hamburger">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </div>
             </nav>
         </div>
     </header>
@@ -311,9 +32,17 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="container">
-            <h1>Land Your Dream Job After College</h1>
-            <p>We help students and fresh graduates get job-ready with professional resume writing, LinkedIn optimization, and personalized job application support.</p>
-            <a href="#services" class="btn btn-accent">View Our Plans</a>
+            <div class="hero-content animate__animated animate__fadeInUp">
+                <h1>Land Your Dream Job After College</h1>
+                <p>We help students and fresh graduates get job-ready with professional resume writing, LinkedIn optimization, and personalized job application support.</p>
+                <div class="hero-buttons">
+                    <a href="#services" class="btn btn-accent">View Our Plans</a>
+                    <a href="#contact" class="btn btn-outline">Free Consultation</a>
+                </div>
+            </div>
+            <div class="hero-image animate__animated animate__fadeInRight">
+                <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80" alt="Career Success">
+            </div>
         </div>
     </section>
 
@@ -323,34 +52,58 @@
             <h2 class="section-title">Our Services</h2>
             <div class="plans">
                 <!-- Basic Plan -->
-                <div class="plan">
+                <div class="plan animate__animated" data-animation="fadeInUp">
+                    <div class="plan-badge">Most Popular</div>
                     <h3>Basic CV Package</h3>
                     <div class="price">₹2000</div>
                     <ul>
-                        <li>Professional CV/Resume rewrite</li>
-                        <li>ATS-friendly formatting</li>
-                        <li>Cover letter template</li>
-                        <li>1 revision included</li>
-                        <li>Email delivery in 3 days</li>
+                        <li><i class="fas fa-check"></i> Professional CV/Resume rewrite</li>
+                        <li><i class="fas fa-check"></i> ATS-friendly formatting</li>
+                        <li><i class="fas fa-check"></i> Cover letter template</li>
+                        <li><i class="fas fa-check"></i> 1 revision included</li>
+                        <li><i class="fas fa-check"></i> Email delivery in 3 days</li>
                     </ul>
                     <a href="signup.html?plan=basic" class="btn">Get Started</a>
                 </div>
                 
                 <!-- Premium Plan -->
-                <div class="plan">
+                <div class="plan premium animate__animated" data-animation="fadeInUp" data-delay="200">
+                    <div class="plan-badge">Best Value</div>
                     <h3>Premium Job Landing</h3>
                     <div class="price">₹5000</div>
                     <ul>
-                        <li>Everything in Basic Package</li>
-                        <li>Unlimited job applications</li>
-                        <li>LinkedIn profile optimization</li>
-                        <li>GitHub project setup</li>
-                        <li>Daily applications for 1 month</li>
-                        <li>Interview preparation</li>
-                        <li>24/7 support</li>
+                        <li><i class="fas fa-check"></i> Everything in Basic Package</li>
+                        <li><i class="fas fa-check"></i> Unlimited job applications</li>
+                        <li><i class="fas fa-check"></i> LinkedIn profile optimization</li>
+                        <li><i class="fas fa-check"></i> GitHub project setup</li>
+                        <li><i class="fas fa-check"></i> Daily applications for 1 month</li>
+                        <li><i class="fas fa-check"></i> Interview preparation</li>
+                        <li><i class="fas fa-check"></i> 24/7 support</li>
                     </ul>
                     <a href="signup.html?plan=premium" class="btn">Get Started</a>
                 </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="container">
+            <div class="stat-item animate__animated" data-animation="fadeIn">
+                <h3>500+</h3>
+                <p>Students Helped</p>
+            </div>
+            <div class="stat-item animate__animated" data-animation="fadeIn" data-delay="100">
+                <h3>95%</h3>
+                <p>Success Rate</p>
+            </div>
+            <div class="stat-item animate__animated" data-animation="fadeIn" data-delay="200">
+                <h3>30+</h3>
+                <p>Partner Companies</p>
+            </div>
+            <div class="stat-item animate__animated" data-animation="fadeIn" data-delay="300">
+                <h3>24/7</h3>
+                <p>Support Available</p>
             </div>
         </div>
     </section>
@@ -360,17 +113,62 @@
         <div class="container">
             <h2 class="section-title">Success Stories</h2>
             <div class="testimonial-grid">
-                <div class="testimonial">
+                <div class="testimonial animate__animated" data-animation="fadeInUp">
+                    <div class="testimonial-header">
+                        <div class="author-image">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Rahul">
+                        </div>
+                        <div class="author-info">
+                            <p class="author">Rahul Sharma</p>
+                            <p class="role">Software Engineer at Google</p>
+                        </div>
+                    </div>
                     <p class="quote">"The premium package helped me land 3 interviews in just 2 weeks! Their resume rewrite made all the difference."</p>
-                    <p class="author">- Rahul, Computer Science Graduate</p>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
                 </div>
-                <div class="testimonial">
+                <div class="testimonial animate__animated" data-animation="fadeInUp" data-delay="100">
+                    <div class="testimonial-header">
+                        <div class="author-image">
+                            <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Priya">
+                        </div>
+                        <div class="author-info">
+                            <p class="author">Priya Patel</p>
+                            <p class="role">Electrical Engineer at Tesla</p>
+                        </div>
+                    </div>
                     <p class="quote">"Worth every rupee! Went from 0 callbacks to multiple interview invites after using their service."</p>
-                    <p class="author">- Priya, Electrical Engineering</p>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
                 </div>
-                <div class="testimonial">
+                <div class="testimonial animate__animated" data-animation="fadeInUp" data-delay="200">
+                    <div class="testimonial-header">
+                        <div class="author-image">
+                            <img src="https://randomuser.me/api/portraits/men/75.jpg" alt="Ankit">
+                        </div>
+                        <div class="author-info">
+                            <p class="author">Ankit Verma</p>
+                            <p class="role">Product Manager at Amazon</p>
+                        </div>
+                    </div>
                     <p class="quote">"Their LinkedIn optimization got me noticed by recruiters. Got a job offer within a month!"</p>
-                    <p class="author">- Ankit, MBA Graduate</p>
+                    <div class="rating">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star-half-alt"></i>
+                    </div>
                 </div>
             </div>
         </div>
@@ -380,50 +178,91 @@
     <section id="contact" class="contact">
         <div class="container">
             <h2 class="section-title">Get In Touch</h2>
-            <div class="contact-form">
-                <form>
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" required>
+            <div class="contact-container">
+                <div class="contact-info animate__animated animate__fadeInLeft">
+                    <h3>Contact Information</h3>
+                    <p><i class="fas fa-envelope"></i> contact@studentcareerboost.com</p>
+                    <p><i class="fas fa-phone"></i> +91 9876543210</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Bangalore, India</p>
+                    
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
                     </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Phone</label>
-                        <input type="tel" id="phone">
-                    </div>
-                    <div class="form-group">
-                        <label for="service">Service Interested In</label>
-                        <select id="service">
-                            <option value="basic">Basic CV Package (₹2000)</option>
-                            <option value="premium">Premium Job Landing (₹5000)</option>
-                            <option value="both">Both Services</option>
-                            <option value="other">Other Inquiry</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label for="message">Message</label>
-                        <textarea id="message"></textarea>
-                    </div>
-                    <button type="submit" class="btn">Submit</button>
-                </form>
+                </div>
+                <div class="contact-form animate__animated animate__fadeInRight">
+                    <form id="contactForm">
+                        <div class="form-group">
+                            <input type="text" id="name" placeholder="Your Name" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="email" id="email" placeholder="Your Email" required>
+                        </div>
+                        <div class="form-group">
+                            <input type="tel" id="phone" placeholder="Phone Number">
+                        </div>
+                        <div class="form-group">
+                            <select id="service">
+                                <option value="" disabled selected>Select Service</option>
+                                <option value="basic">Basic CV Package (₹2000)</option>
+                                <option value="premium">Premium Job Landing (₹5000)</option>
+                                <option value="both">Both Services</option>
+                                <option value="other">Other Inquiry</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <textarea id="message" placeholder="Your Message"></textarea>
+                        </div>
+                        <button type="submit" class="btn">Send Message <i class="fas fa-paper-plane"></i></button>
+                    </form>
+                </div>
             </div>
         </div>
     </section>
 
     <!-- Footer -->
-    <footer>
+    <footer class="footer">
         <div class="container">
-            <div class="logo">StudentCareerBoost</div>
-            <ul class="footer-links">
-                <li><a href="#services">Services</a></li>
-                <li><a href="#testimonials">Testimonials</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-            <p>&copy; 2023 StudentCareerBoost. All rights reserved.</p>
+            <div class="footer-content">
+                <div class="footer-col">
+                    <h3>StudentCareerBoost</h3>
+                    <p>Helping students and fresh graduates land their dream jobs through professional career services.</p>
+                </div>
+                <div class="footer-col">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#services">Services</a></li>
+                        <li><a href="#testimonials">Success Stories</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Services</h4>
+                    <ul>
+                        <li><a href="#">Resume Writing</a></li>
+                        <li><a href="#">LinkedIn Optimization</a></li>
+                        <li><a href="#">Interview Preparation</a></li>
+                        <li><a href="#">Job Application Support</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h4>Newsletter</h4>
+                    <form class="newsletter-form">
+                        <input type="email" placeholder="Your Email">
+                        <button type="submit"><i class="fas fa-paper-plane"></i></button>
+                    </form>
+                    <p>Subscribe to get career tips and updates</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 StudentCareerBoost. All rights reserved.</p>
+            </div>
         </div>
     </footer>
+
+    <script src="js/main.js"></script>
 </body>
 </html>
