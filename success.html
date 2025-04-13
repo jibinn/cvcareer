@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You - StudentCareerBoost</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+        
+        body {
+            background: #f8fafc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+        }
+        
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            max-width: 600px;
+        }
+        
+        h1 {
+            color: #2563eb;
+            margin-bottom: 20px;
+        }
+        
+        p {
+            margin-bottom: 30px;
+            font-size: 18px;
+        }
+        
+        .btn {
+            display: inline-block;
+            background: #2563eb;
+            color: white;
+            padding: 12px 24px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Thank You for Signing Up!</h1>
+        <p>We've received your application for our <span id="planName"></span> package.</p>
+        <p>Our team will contact you within 24 hours to proceed with your selected service.</p>
+        <a href="index.html" class="btn">Return to Home</a>
+    </div>
+
+    <script>
+        // Display the selected plan if coming from form submission
+        const urlParams = new URLSearchParams(window.location.search);
+        const plan = urlParams.get('plan');
+        
+        if (plan) {
+            const planName = document.getElementById('planName');
+            if (plan === 'basic') {
+                planName.textContent = 'Basic CV';
+            } else if (plan === 'premium') {
+                planName.textContent = 'Premium Job Landing';
+            }
+        }
+    </script>
+</body>
+</html>

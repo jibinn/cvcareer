@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Join StudentCareerBoost</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Arial', sans-serif;
+        }
+
+        :root {
+            --primary-color: #2563eb;
+            --secondary-color: #1e40af;
+            --accent-color: #f59e0b;
+            --light-color: #f8fafc;
+            --dark-color: #1e293b;
+        }
+
+        body {
+            line-height: 1.6;
+            color: var(--dark-color);
+            background: var(--light-color);
+        }
+
+        .container {
+            width: 90%;
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: bold;
+            transition: background 0.3s;
+            font-size: 16px;
+            width: 100%;
+        }
+
+        .btn:hover {
+            background: var(--secondary-color);
+        }
+
+        .btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .form-container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: var(--primary-color);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .plan-display {
+            background: #f0f7ff;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+        .optional {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .file-hint {
+            font-size: 0.8em;
+            color: #666;
+            margin-top: 5px;
+        }
+
+        input[type="file"] {
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            width: 100%;
+            background: white;
+        }
+
+        .error-message {
+            color: red;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="form-container">
+            <h1>Join StudentCareerBoost</h1>
+
+            <div class="plan-display" id="selectedPlan">
+                <!-- Plan will be displayed here by JavaScript -->
+            </div>
+
+            <form id="signupForm">
+                <input type="hidden" id="planInput" name="plan">
+
+                <div class="form-group">
+                    <label for="name">Full Name*</label>
+                    <input type="text" id="name" name="name" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">Email Address*</label>
+                    <input type="email" id="email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="phone">Phone Number*</label>
+                    <input type="tel" id="phone" name="phone" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="linkedin">LinkedIn Profile <span class="optional">(optional)</span></label>
+                    <input type="url" id="linkedin" name="linkedin" placeholder="https://linkedin.com/in/yourprofile">
+                </div>
+
+                <div class="form-group">
+                    <label for="github">GitHub Profile <span class="optional">(optional)</span></label>
+                    <input type="url" id="github" name="github" placeholder="https://github.com/yourusername">
+                </div>
+
+                <div class="form-group">
+                    <label for="cv">Upload Your CV (PDF/DOC/DOCX)*</label>
+                    <input type="file" id="cv" name="cv" accept=".pdf,.doc,.docx" required>
+                    <p class="file-hint">Max file size: 2MB</p>
+                </div>
+
+                <button type="submit" class="btn" id="submitBtn">Submit Application</button>
+                <div class="error-message" id="errorMessage"></div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Get the plan from URL parameter
+        const urlParams = new URLSearchParams(window.location.search);
+        const plan = urlParams.get('plan');
+
+        // Set the plan in the form and display
+        if (plan) {
+            const planInput = document.getElementById('planInput');
+            const planDisplay = document.getElementById('selectedPlan');
+
+            if (plan === 'basic') {
+                planInput.value = 'basic';
+                planDisplay.textContent = 'You are signing up for: Basic CV Package (₹2000)';
+            } else if (plan === 'premium') {
+                planInput.value = 'premium';
+                planDisplay.textContent = 'You are signing up for: Premium Job Landing Package (₹5000)';
+            }
+        }
+
+        // Add file size validation
+        document.getElementById('cv').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            const maxSize = 2 * 1024 * 1024; // 2MB
+            const errorElement = document.getElementById('errorMessage');
+
+            if (file && file.size > maxSize) {
+                errorElement.textContent = 'File size exceeds 2MB limit. Please choose a smaller file.';
+                e.target.value = ''; // Clear the file input
+            } else {
+                errorElement.textContent = '';
+            }
+        });
+
+        // Form submission handling
+        document.getElementById('signupForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+
+            const submitBtn = document.getElementById('submitBtn');
+            const errorElement = document.getElementById('errorMessage');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Submitting...';
+            errorElement.textContent = '';
+
+            try {
+                // Get form data
+                const formData = {
+                    plan: document.getElementById('planInput').value,
+                    name: document.getElementById('name').value,
+                    email: document.getElementById('email').value,
+                    phone: document.getElementById('phone').value,
+                    linkedin: document.getElementById('linkedin').value || null,
+                    github: document.getElementById('github').value || null
+                };
+
+                // Handle file upload
+                const cvInput = document.getElementById('cv');
+                if (cvInput.files.length > 0) {
+                    const file = cvInput.files[0];
+
+                    // Read file as base64
+                    const fileContent = await new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve(reader.result.split(',')[1]);
+                        reader.onerror = reject;
+                        reader.readAsDataURL(file);
+                    });
+
+                    // Now package it into a nested object (so the backend can read it)
+                    formData.cvFile = {
+                        name: file.name,
+                        mimeType: file.type,
+                        data: fileContent
+                    };
+                }
+
+
+                // Submit to Google Apps Script
+                const scriptUrl = 'https://script.google.com/macros/s/AKfycbwvQ9lZtvS4LFNDwfJVkdQ5G68gq2XGfmzAUEZIceM2FsDxxIIJn9dKrCDlaBhxKsZSYA/exec';
+
+                const response = await fetch(scriptUrl, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const result = await response.json();
+                if (result.result === 'success') {
+                    window.location.href = "success.html?plan=" + encodeURIComponent(formData.plan);
+                } else {
+                    throw new Error(result.error || 'Unknown error occurred');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                errorElement.textContent = 'There was an error submitting your form. Please try again.';
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Submit Application';
+            }
+        });
+    </script>
+</body>
+
+</html>
