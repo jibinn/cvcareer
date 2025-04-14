@@ -89,15 +89,25 @@ ul {
 
 .btn-outline {
     background: transparent;
+    color: #fff !important;
     border: 2px solid var(--primary-color);
     color: var(--primary-color);
 }
+.btn-outline1 {
+    background: transparent;
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+}
+
 
 .btn-outline:hover {
     background: var(--primary-color);
     color: var(--white);
 }
-
+.btn-outline1:hover {
+    background: var(--primary-color);
+    color: var(--white);
+}
 /* Header */
 .header {
     background: var(--white);

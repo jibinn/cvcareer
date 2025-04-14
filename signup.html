@@ -249,8 +249,8 @@
                             <span id="file-name" class="file-name"></span>
                         </label>
                         <input type="file" name="cv" id="cv" class="d-none" accept=".pdf,.doc,.docx" required />
-                        <div class="progress">
-                            <div class="progress-bar" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        <div class="progress d-none" id="upload-progress">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" style="width: 0%"></div>
                         </div>
                     </div>
                 </div>
@@ -263,10 +263,24 @@
                 </div>
                 
                 <div class="d-grid animate-form delay-3">
-                    <button type="submit" class="btn btn-primary btn-lg">
+                    <button type="submit" class="btn btn-primary btn-lg" id="submit-btn">
                         <span id="submit-text">Submit Application</span>
                         <span id="submit-spinner" class="spinner-border spinner-border-sm d-none" role="status" aria-hidden="true"></span>
                     </button>
+                </div>
+                
+                <!-- Loading overlay -->
+                <div class="loading-overlay d-none" id="loading-overlay">
+                    <div class="loading-content">
+                        <div class="spinner-border text-primary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <p class="mt-3">Processing your application...</p>
+                        <div class="progress mt-2 w-100">
+                            <div class="progress-bar progress-bar-striped progress-bar-animated" id="overall-progress" style="width: 0%"></div>
+                        </div>
+                        <small class="text-muted" id="status-message">Preparing submission...</small>
+                    </div>
                 </div>
             </form>
         </div>
@@ -301,10 +315,13 @@
         const form = document.getElementById("submit-to-google-sheet");
         const cvInput = document.getElementById("cv");
         const fileName = document.getElementById("file-name");
-        const progressBar = document.querySelector(".progress");
-        const progress = document.querySelector(".progress-bar");
+        const uploadProgress = document.getElementById("upload-progress");
+        const submitBtn = document.getElementById("submit-btn");
         const submitText = document.getElementById("submit-text");
         const submitSpinner = document.getElementById("submit-spinner");
+        const loadingOverlay = document.getElementById("loading-overlay");
+        const overallProgress = document.getElementById("overall-progress");
+        const statusMessage = document.getElementById("status-message");
 
         // File upload display
         cvInput.addEventListener("change", function() {
@@ -351,70 +368,79 @@
         form.addEventListener("submit", async function(e) {
             e.preventDefault();
             
+            // Disable form elements during submission
+            const formElements = form.elements;
+            for (let i = 0; i < formElements.length; i++) {
+                formElements[i].disabled = true;
+            }
+            
+            // Show loading state on button
+            submitText.textContent = "Processing...";
+            submitSpinner.classList.remove("d-none");
+            submitBtn.classList.add("disabled");
+            
+            // Show loading overlay
+            loadingOverlay.classList.remove("d-none");
+            document.body.style.overflow = "hidden";
+            
             // Validate consent
             if (!document.getElementById("consent").checked) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Consent Required',
-                    text: 'Please agree to our privacy policy before submitting',
-                });
+                showError("Consent Required", "Please agree to our privacy policy before submitting");
                 return;
             }
             
             // Validate CV
             if (cvInput.files.length === 0) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'CV Required',
-                    text: 'Please upload your CV before submitting',
-                });
+                showError("CV Required", "Please upload your CV before submitting");
                 return;
             }
             
             const file = cvInput.files[0];
             if (file.size > 2 * 1024 * 1024) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'File Too Large',
-                    text: 'Please upload a file smaller than 2MB',
-                });
+                showError("File Too Large", "Please upload a file smaller than 2MB");
                 return;
             }
 
-            // Show loading state
-            submitText.textContent = "Uploading...";
-            submitSpinner.classList.remove("d-none");
-            progressBar.style.display = "block";
-
-            const formData = new FormData(form);
-            formData.append("consent", document.getElementById("consent").checked ? "Yes" : "No");
-
-            // Simulate progress (remove in production)
-            let progressValue = 0;
-            const progressInterval = setInterval(() => {
-                progressValue += Math.random() * 10;
-                if (progressValue >= 90) clearInterval(progressInterval);
-                progress.style.width = `${progressValue}%`;
-                progress.setAttribute("aria-valuenow", progressValue);
-            }, 200);
-
             try {
-                const reader = new FileReader();
-                reader.onload = async function() {
-                    formData.append("cv", reader.result); // Full data URI
+                // Update progress UI
+                updateProgress(10, "Preparing your data...");
+                
+                // Prepare form data
+                const formData = new FormData(form);
+                formData.append("consent", document.getElementById("consent").checked ? "Yes" : "No");
+                
+                // Show upload progress
+                uploadProgress.classList.remove("d-none");
+                const uploadProgressBar = uploadProgress.querySelector(".progress-bar");
+                
+                // Simulate progress for demo (remove in production)
+                simulateProgress(uploadProgressBar, 20, 70, 1000);
+                
+                // Read file as base64
+                updateProgress(20, "Reading your CV...");
+                const fileContent = await readFileAsBase64(file);
+                formData.append("cv", fileContent);
+                
+                // Update progress
+                updateProgress(50, "Uploading your data...");
+                
+                // Submit to Google Sheets
+                const response = await fetch(scriptURL, {
+                    method: "POST",
+                    body: formData
+                });
+                
+                // Complete progress
+                updateProgress(90, "Finalizing submission...");
+                uploadProgressBar.style.width = "100%";
+                
+                const result = await response.json();
+                
+                if (result.result === "success") {
+                    updateProgress(100, "Submission complete!");
                     
-                    const response = await fetch(scriptURL, {
-                        method: "POST",
-                        body: formData
-                    });
-                    
-                    clearInterval(progressInterval);
-                    progress.style.width = "100%";
-                    progress.setAttribute("aria-valuenow", 100);
-                    
-                    const result = await response.json();
-                    
-                    if (result.result === "success") {
+                    // Show success message after a small delay
+                    setTimeout(() => {
                         Swal.fire({
                             icon: 'success',
                             title: 'Application Submitted!',
@@ -426,27 +452,84 @@
                         // Reset form
                         form.reset();
                         fileName.textContent = "";
-                        progressBar.style.display = "none";
-                    } else {
-                        throw new Error(result.error || "Submission failed");
-                    }
-                };
-                
-                reader.readAsDataURL(file);
+                        uploadProgress.classList.add("d-none");
+                        
+                        // Hide loading states
+                        resetFormState();
+                    }, 1000);
+                } else {
+                    throw new Error(result.error || "Submission failed");
+                }
             } catch (error) {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Submission Error',
-                    text: error.message || 'Something went wrong. Please try again!',
-                });
-            } finally {
-                submitText.textContent = "Submit Application";
-                submitSpinner.classList.add("d-none");
-                progressBar.style.display = "none";
-                progress.style.width = "0%";
-                progress.setAttribute("aria-valuenow", 0);
+                showError("Submission Error", error.message || 'Something went wrong. Please try again!');
             }
         });
+
+        // Helper function to read file as base64
+        function readFileAsBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+        
+        // Helper function to simulate progress
+        function simulateProgress(element, start, end, duration) {
+            let startTime = null;
+            
+            function animate(currentTime) {
+                if (!startTime) startTime = currentTime;
+                const progress = Math.min((currentTime - startTime) / duration, 1);
+                const value = start + (end - start) * progress;
+                element.style.width = `${value}%`;
+                
+                if (progress < 1) {
+                    requestAnimationFrame(animate);
+                }
+            }
+            
+            requestAnimationFrame(animate);
+        }
+        
+        // Helper function to update progress
+        function updateProgress(percent, message) {
+            overallProgress.style.width = `${percent}%`;
+            statusMessage.textContent = message;
+        }
+        
+        // Helper function to show error
+        function showError(title, message) {
+            Swal.fire({
+                icon: 'error',
+                title: title,
+                text: message,
+            });
+            resetFormState();
+        }
+        
+        // Helper function to reset form state
+        function resetFormState() {
+            // Hide loading overlay
+            loadingOverlay.classList.add("d-none");
+            document.body.style.overflow = "auto";
+            
+            // Reset button state
+            submitText.textContent = "Submit Application";
+            submitSpinner.classList.add("d-none");
+            submitBtn.classList.remove("disabled");
+            
+            // Re-enable form elements
+            const formElements = form.elements;
+            for (let i = 0; i < formElements.length; i++) {
+                formElements[i].disabled = false;
+            }
+            
+            // Reset progress
+            overallProgress.style.width = "0%";
+            statusMessage.textContent = "Preparing submission...";
+        }
 
         // Animate form elements on scroll
         const animateOnScroll = function() {
@@ -468,5 +551,43 @@
         window.addEventListener('load', animateOnScroll);
         window.addEventListener('scroll', animateOnScroll);
     </script>
+    
+    <style>
+        /* Add these styles to your existing CSS */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(255, 255, 255, 0.9);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+        
+        .loading-content {
+            text-align: center;
+            max-width: 400px;
+            padding: 30px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .file-upload-wrapper {
+            position: relative;
+        }
+        
+        .progress {
+            height: 8px;
+            margin-top: 10px;
+        }
+        
+        .progress-bar {
+            transition: width 0.3s ease;
+        }
+    </style>
 </body>
 </html>
